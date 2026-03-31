@@ -4,6 +4,7 @@ import tensorflow as tf
 import numpy as np
 from PIL import Image
 import io
+from datetime import datetime
 
 app = FastAPI()
 
@@ -47,11 +48,13 @@ async def predict(file: UploadFile = File(...)):
     confidence = float(np.max(predictions[0]))
 
     return {
-        "prediction": CLASSES[idx],
-        "confidence": confidence,
-        "is_cancer": "benign" not in CLASSES[idx].lower()
-    }
-
+    "prediction": CLASSES[idx],
+    "confidence": confidence,
+    "is_cancer": "benign" not in CLASSES[idx].lower(),
+    "fileName": file.filename, # Add this
+    "date": datetime.now().strftime("%Y-%m-%d"), # Add this
+    "timestamp": datetime.now().strftime("%H:%M:%S") # Add this
+}
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
