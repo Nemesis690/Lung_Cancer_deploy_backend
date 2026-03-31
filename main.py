@@ -10,7 +10,7 @@ app = FastAPI()
 # IMPORTANT: This allows your React frontend to talk to this Python backend
 origins = [
     "http://localhost:3000",
-    "https://lung-cancer-deploy-frontend.vercel.app/", 
+    "https://lung-cancer-deploy-frontend.vercel.app", 
 ]
 app.add_middleware(
     CORSMiddleware,
