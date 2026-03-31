@@ -20,9 +20,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load the model you just saved
-model = tf.keras.models.load_model('lung_cancer_model.h5')
+model = None
 
+@app.on_event("startup")
+async def startup_event():
+    global model
+    # Load model AFTER the server starts to avoid boot timeout
+    model = tf.keras.models.load_model('lung_cancer_model.h5', compile=False)
 # These must match the order in your notebook's train_gen.class_indices
 CLASSES = ['Lung Adenocarcinoma', 'Lung Benign Tissue', 'Lung Squamous Cell Carcinoma']
 
